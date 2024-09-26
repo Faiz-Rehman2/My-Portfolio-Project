@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { auth, storage } from '../components/firebaseconfig'; 
 import { updateProfile, updatePassword } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
-<<<<<<< HEAD
 import Navbar from '../components/Navbar'; 
-=======
-import Navbar from '../components/Navbar';
->>>>>>> 9be996718ba0ad8cb906f61baa886aed3d0e8975
 
 const Profile = () => {
   const [fullName, setFullName] = useState(''); 
@@ -18,18 +14,11 @@ const Profile = () => {
     const currentUser = auth.currentUser;
     if (currentUser) {
       setUser(currentUser);
-<<<<<<< HEAD
       setFullName(currentUser.displayName || ''); 
     }
   }, []);
 
 
-=======
-      setFullName(currentUser.displayName || '');
-    }
-  }, []);
-
->>>>>>> 9be996718ba0ad8cb906f61baa886aed3d0e8975
   const handleProfilePicUpload = async () => {
     if (profilePic) {
       const fileRef = ref(storage, `profilePictures/${user.uid}`);
@@ -51,24 +40,13 @@ const Profile = () => {
         console.log('Full name updated successfully');
       }
 
-<<<<<<< HEAD
-      await handleProfilePicUpload();
-
-=======
-
       await ProfilePicUpload();
 
-
->>>>>>> 9be996718ba0ad8cb906f61baa886aed3d0e8975
       if (password) {
         await updatePassword(user, password);
         console.log('Password updated successfully');
       }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 9be996718ba0ad8cb906f61baa886aed3d0e8975
       setUser(auth.currentUser);
     } catch (error) {
       console.log('Error updating profile: ', error.message);
@@ -85,12 +63,7 @@ const Profile = () => {
             <h1 className="text-2xl font-bold mb-5">Profile Page</h1>
             <p className="text-gray-600 mb-5">Update your profile information</p>
 
-<<<<<<< HEAD
-            <form onSubmit={handleProfileUpdate} className="flex flex-col gap-4 items-center">
-=======
-            
             <form onSubmit={ProfileUpdate} className="flex flex-col gap-4 items-center">
->>>>>>> 9be996718ba0ad8cb906f61baa886aed3d0e8975
               <div className="flex flex-col items-center">
                 <img
                   src={user.photoURL || 'https://via.placeholder.com/150'}
