@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../components/firebaseconfig.js'; 
 import Navbar from '../components/Navbar.jsx';
+import { Link } from 'react-router-dom';
 
 const Signin = () => {
   const [signinEmail, setSigninEmail] = useState("");
@@ -47,7 +48,8 @@ const Signin = () => {
             setSigninPassword(event.target.value);
           }}
         />
-        <button type="submit"  className="bg-[#7749F8] text-white py-2 px-3 rounded-md">Signin</button> {/* Submit button */}
+        <button type="submit"  className="bg-[#7749F8] text-white py-2 px-3 rounded-md">Signin</button>
+       <Link to={"/Signup"}> <button type=""  className="bg-[#7749F8] text-white py-2 px-3 rounded-md">Register Here!</button></Link>
       </form>
     </>
   );

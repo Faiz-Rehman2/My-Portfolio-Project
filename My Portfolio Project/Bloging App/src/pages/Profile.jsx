@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { auth, storage } from '../components/firebaseconfig'; // Import Firebase auth and storage
+import { auth, storage } from '../components/firebaseconfig'; 
 import { updateProfile, updatePassword } from 'firebase/auth';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase storage functions
-import Navbar from '../components/Navbar'; // Navbar
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import Navbar from '../components/Navbar'; 
 
 const Profile = () => {
-  const [fullName, setFullName] = useState(''); // Full name state
-  const [profilePic, setProfilePic] = useState(null); // Profile picture state
-  const [password, setPassword] = useState(''); // Password state
-  const [user, setUser] = useState(null); // User state
+  const [fullName, setFullName] = useState(''); 
+  const [profilePic, setProfilePic] = useState(null); 
+  const [password, setPassword] = useState(''); 
+  const [user, setUser] = useState(null); 
 
   useEffect(() => {
     const currentUser = auth.currentUser;
     if (currentUser) {
       setUser(currentUser);
-      setFullName(currentUser.displayName || ''); // Set full name from user profile
+      setFullName(currentUser.displayName || ''); 
     }
   }, []);
 
-  // Handle profile picture upload
+
   const handleProfilePicUpload = async () => {
     if (profilePic) {
       const fileRef = ref(storage, `profilePictures/${user.uid}`);
@@ -29,11 +29,10 @@ const Profile = () => {
     }
   };
 
-  // Handle profile update
+
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     try {
-      // Update full name
       if (fullName) {
         await updateProfile(user, {
           displayName: fullName,
@@ -41,25 +40,23 @@ const Profile = () => {
         console.log('Full name updated successfully');
       }
 
-      // Update profile picture if provided
       await handleProfilePicUpload();
 
-      // If password is entered, update password
       if (password) {
         await updatePassword(user, password);
         console.log('Password updated successfully');
       }
 
-      // Fetch updated user data
       setUser(auth.currentUser);
     } catch (error) {
       console.log('Error updating profile: ', error.message);
     }
   };
+  
 
   return (
     <>
-      <Navbar /> {/* Include Navbar */}
+      <Navbar /> 
       <div className="profile-page flex justify-center items-center flex-col mt-10">
         {user && (
           <>
@@ -67,7 +64,6 @@ const Profile = () => {
             <p className="text-gray-600 mb-5">Update your profile information</p>
 
             <form onSubmit={handleProfileUpdate} className="flex flex-col gap-4 items-center">
-              {/* Profile Picture */}
               <div className="flex flex-col items-center">
                 <img
                   src={user.photoURL || 'https://via.placeholder.com/150'}
@@ -84,7 +80,6 @@ const Profile = () => {
                 />
               </div>
 
-              {/* Full Name */}
               <div>
                 <label className="block text-gray-700">Full Name:</label>
                 <input
@@ -97,7 +92,6 @@ const Profile = () => {
                 />
               </div>
 
-              {/* Password */}
               <div>
                 <label className="block text-gray-700">New Password (optional):</label>
                 <input
