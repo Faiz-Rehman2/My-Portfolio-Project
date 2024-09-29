@@ -10,6 +10,8 @@ const Profile = () => {
   const [password, setPassword] = useState(''); 
   const [user, setUser] = useState(null); 
 
+
+  // Current User Data
   useEffect(() => {
     const currentUser = auth.currentUser;
     if (currentUser) {
@@ -19,9 +21,11 @@ const Profile = () => {
   }, []);
 
 
-  const handleProfilePicUpload = async () => {
+
+// Image Update function Here
+  const PictureUpdate = async () => {
     if (profilePic) {
-      const fileRef = ref(storage, `profilePictures/${user.uid}`);
+      const fileRef = ref(storage, `/${user.uid}`);
       await uploadBytes(fileRef, profilePic);
       const downloadURL = await getDownloadURL(fileRef);
       await updateProfile(user, { photoURL: downloadURL });
@@ -30,21 +34,24 @@ const Profile = () => {
   };
 
 
-  const handleProfileUpdate = async (e) => {
+
+// Start here
+// Name Update Here
+  const profileUpdate = async (e) => {
     e.preventDefault();
     try {
       if (fullName) {
         await updateProfile(user, {
           displayName: fullName,
         });
-        console.log('Full name updated successfully');
+        console.log('Full name updated');
       }
-
-      await ProfilePicUpload();
+ 
+      await PictureUpdate();
 
       if (password) {
         await updatePassword(user, password);
-        console.log('Password updated successfully');
+        console.log('Password updated');
       }
 
       setUser(auth.currentUser);
@@ -52,18 +59,20 @@ const Profile = () => {
       console.log('Error updating profile: ', error.message);
     }
   };
-  
+
+
 
   return (
     <>
-      <Navbar /> 
+      <Navbar />
+
       <div className="profile-page flex justify-center items-center flex-col mt-10">
         {user && (
           <>
             <h1 className="text-2xl font-bold mb-5">Profile Page</h1>
             <p className="text-gray-600 mb-5">Update your profile information</p>
 
-            <form onSubmit={ProfileUpdate} className="flex flex-col gap-4 items-center">
+            <form onSubmit={profileUpdate} className="flex flex-col gap-4 items-center">
               <div className="flex flex-col items-center">
                 <img
                   src={user.photoURL || 'https://via.placeholder.com/150'}

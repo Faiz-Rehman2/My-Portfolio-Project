@@ -3,27 +3,33 @@ import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from './components/firebaseconfig';
 import Navbar from './components/Navbar';
 
+
+
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    fetchBlogs();
+    getBlogs();
   }, []);
 
-  const fetchBlogs = async () => {
+
+  const getBlogs = async () => {
     try {
       const blogsRef = collection(db, 'blogs');
-      const q = query(blogsRef, orderBy('createdAt', 'desc')); 
+      const q = query(blogsRef, orderBy('createdAt', 'asc')); 
       const querySnapshot = await getDocs(q);
-      const allBlogs = querySnapshot.docs.map(doc => ({
-        id: doc.id, 
-        ...doc.data() 
-      }));
+      const allBlogs = querySnapshot.docs.map(doc => (
+        { id: doc.id,  ...doc.data() 
+      }
+    ));
       setBlogs(allBlogs);
+      console.log(allBlogs)
     } catch (error) {
       console.error('Error fetching blogs:', error);
     }
   };
+
+
 
   return (
     <>
@@ -36,7 +42,7 @@ const Home = () => {
               <h3 className="text-lg font-semibold">{blog.title}</h3>
               <p className="text-gray-700">{blog.body.slice(0, 100)}...</p>
               <p className="text-gray-500 text-sm">Published on: {new Date(blog.createdAt.seconds * 1000).toLocaleDateString()}</p>
-              <p className="text-gray-500 text-sm">By: {blog.authorName || "Unknown"}</p> {/* Display author name or fallback */}
+              <p className="text-gray-500 text-sm">By: {blog.authorName || "Guest"}</p>
               <button className="text-blue-500 mt-2">Read More</button>
             </div>
           ))

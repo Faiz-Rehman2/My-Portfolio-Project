@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db, storage } from '../components/firebaseconfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
 import { doc, setDoc } from 'firebase/firestore'; 
@@ -9,8 +9,8 @@ const Signup = () => {
   const [signupName, setSignupName] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); 
-  const [signupImage, setSignupImage] = useState(null); 
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [signupImage, setSignupImage] = useState(null);
 
   const signup = async (e) => {
     e.preventDefault();
@@ -21,11 +21,11 @@ const Signup = () => {
     }
 
     try {
-     
+      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
       const user = userCredential.user;
 
-
+      // For image upload
       let imageURL = '';
       if (signupImage) {
         const imageRef = ref(storage, `${user.uid}`);
@@ -33,20 +33,20 @@ const Signup = () => {
         imageURL = await getDownloadURL(snapshot.ref);
       }
 
+      // Update image with name 
       await updateProfile(user, {
-        displayName: signupName,
+        displayName: signupName, 
         photoURL: imageURL,
       });
 
-
+      // Save user data in Firestore
       await setDoc(doc(db, 'users', user.uid), {
-        name: signupName,
+        name: signupName, // Save name in Firestore
         email: signupEmail,
         profilePic: imageURL,
         uid: user.uid,
         createdAt: new Date(),
       });
-
 
       console.log('User signed up and profile updated:', user);
     } catch (error) {
@@ -57,9 +57,11 @@ const Signup = () => {
 
   return (
     <>
-      {/* NAVBAR */}
+    {/* NavBar Here */}
       <Navbar />
 
+
+      {/* Body */}
       <form className='flex justify-center flex-col items-center mt-10 gap-7' onSubmit={signup}>
         <label>
           Full Name:
@@ -116,7 +118,9 @@ const Signup = () => {
           onChange={(event) => setSignupImage(event.target.files[0])}
         />
 
-        <button type="submit" className="bg-[#7749F8] text-white py-2 px-3 rounded-md">Signup</button>
+        <button type="submit" className="bg-[#7749F8] text-white py-2 px-3 rounded-md">
+          Signup
+        </button>
       </form>
     </>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {  signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../components/firebaseconfig.js'; 
 import Navbar from '../components/Navbar.jsx';
 import { Link } from 'react-router-dom';
+
+
 
 const Signin = () => {
   const [signinEmail, setSigninEmail] = useState("");
@@ -16,6 +18,8 @@ const Signin = () => {
         const user = userCredential.user;
         console.log("User signed in: ", user);
       })
+
+
       
       .catch((error) => {
         const errorCode = error.code;
@@ -28,8 +32,11 @@ const Signin = () => {
 
   return (
     <>
-    <Navbar />
+      {/* NavBar Here */}
+          <Navbar />
 
+
+      {/* Body */}
       <form   className='flex justify-center flex-col items-center mt-10 gap-7 '
       onSubmit={signin}>
         <input  className='w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 hover:border-gray-300 transition duration-300'
