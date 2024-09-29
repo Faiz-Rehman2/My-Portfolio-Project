@@ -7,7 +7,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
-// import UserBlog from "./pages/UserBlog";
+import UserBlog from "./pages/UserBlog";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -16,10 +16,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home />,
   },
-  // {
-  //   path: "/userblog",
-  //   element: <UserBlog />,
-  // },
+  {
+    path: "/userblog/:userId",
+    element: <UserBlog />,
+  },
   {
     path: "/signup",
     element: <Signup />,

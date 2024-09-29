@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from './components/firebaseconfig';
 import Navbar from './components/Navbar';
-
-
+import { Link } from 'react-router-dom'; 
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,19 +10,20 @@ const Home = () => {
   useEffect(() => {
     getBlogs();
   }, []);
+ 
 
-
-  const getBlogs = async () => {
+   const getBlogs = async () => {
     try {
       const blogsRef = collection(db, 'blogs');
       const q = query(blogsRef, orderBy('createdAt', 'asc')); 
       const querySnapshot = await getDocs(q);
       const allBlogs = querySnapshot.docs.map(doc => (
         { id: doc.id,  ...doc.data() 
-      }
-    ));
-      setBlogs(allBlogs);
-      console.log(allBlogs)
+      }));
+ 
+ 
+     setBlogs(allBlogs);
+
     } catch (error) {
       console.error('Error fetching blogs:', error);
     }
@@ -43,7 +43,8 @@ const Home = () => {
               <p className="text-gray-700">{blog.body.slice(0, 100)}...</p>
               <p className="text-gray-500 text-sm">Published on: {new Date(blog.createdAt.seconds * 1000).toLocaleDateString()}</p>
               <p className="text-gray-500 text-sm">By: {blog.authorName || "Guest"}</p>
-              <button className="text-blue-500 mt-2">Read More</button>
+
+              <Link to={`/userblog/${blog.userId}`} className="text-blue-500 mt-2">Read More</Link>
             </div>
           ))
         ) : (
